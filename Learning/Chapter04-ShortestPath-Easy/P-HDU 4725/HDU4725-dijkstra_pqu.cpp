@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <queue>
+#define TES
 using namespace::std;
 const int maxn = 100100; // 10^5
 const int INF = 0x3f3f3f3f;
@@ -28,6 +29,7 @@ int least[3 * maxn]; // i点到1点的最近距离
 bool visited[3 * maxn]; // 是否已获得最小值
 bool bLayer[maxn]; // 第i层是否出现过
 
+// 最开始因为数组范围开的不够大一直WA......
 void addEdge(int from, int to, int cost) {
     Edges[edge_num].point = to;
     Edges[edge_num].cost = cost;
@@ -59,8 +61,10 @@ int dijkstra(void) {
 }
 
 int main(void) {
+    #ifdef TEST
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
+    #endif
     scanf("%d", &T);
     for (int t = 1; t <= T; ++t) {
         memset(head, -1, sizeof(head));

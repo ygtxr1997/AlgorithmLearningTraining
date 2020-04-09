@@ -24,10 +24,11 @@ int T; // T cases
 int N, M, C; // N points, M edges, C layer cost, 0<=N,M<=10000
 int L[maxn]; // i点所在层, 1<=Li<=N, 入点编号从N~2*N-1, 出点编号从2*N~3*N-1
 int maxLayer; // 最大层数
-int least[maxn]; // i点到1点的最近距离
-bool visited[maxn]; // 是否已获得最小值
+int least[3 * maxn]; // i点到1点的最近距离
+bool visited[3 * maxn]; // 是否已获得最小值
 bool bLayer[maxn]; // 第i层是否出现过
 
+// 最开始因为数组范围开的不够大一直WA......
 void addEdge(int from, int to, int cost) {
     Edges[edge_num].point = to;
     Edges[edge_num].cost = cost;
@@ -35,23 +36,25 @@ void addEdge(int from, int to, int cost) {
     head[from] = edge_num++;
 }
 // spfa会超时, 考虑dijkstra+优先队列
-int dijkstra(void) {
+// 算出来结果确实是对的, 但是会超时
+int spfa(void) {
     memset(least, 0x3f, sizeof(least));
     memset(visited, 0, sizeof(visited));
     least[1] = 0;
-    priority_queue<pii> qu;
-    qu.push(pii(1, 0));
+    queue<int> qu;
+    qu.push(1);
     while (!qu.empty()) {
-        int pv = qu.top().point, cost = qu.top().cost;
+        int pv = qu.front();
         qu.pop();
-        if (visited[pv] == 1) continue;
-        visited[pv] = 1;
-        least[pv] = cost;
+        visited[pv] = 0;
         for (int iNode = head[pv]; iNode != -1; iNode = Edges[iNode].next) {
             int px = Edges[iNode].point, cost = Edges[iNode].cost;
-            if (!visited[px] && least[px] > least[pv] + cost) {
+            if (least[px] > least[pv] + cost) {
                 least[px] = least[pv] + cost;
-                qu.push(pii(px, least[px]));
+                if (!visited[px]) {
+                    qu.push(px);
+                    visited[px] = 1;
+                }
             }
         }
     }
@@ -59,6 +62,8 @@ int dijkstra(void) {
 }
 
 int main(void) {
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
     scanf("%d", &T);
     for (int t = 1; t <= T; ++t) {
         memset(head, -1, sizeof(head));
@@ -69,26 +74,9 @@ int main(void) {
         for (int i = 1; i <= N; ++i) {
             scanf("%d", &(L[i]));
             if (L[i] > maxLayer) maxLayer = L[i];
+            addEdge(maxn + L[i], i, 0); // 该层入点到所有点距离为0
+            addEdge(i, 2 * maxn + L[i], C); // 该层所有点到出点距离为C
             bLayer[L[i]] = 1;
-        }
-        for (int i = 1; i <= N; ++i) {
-            if (L[i] == 1) {
-                addEdge(N + L[i], i, 0);
-                if (bLayer[L[i] + 1]) {
-                    addEdge(i, N + L[i] + 1, C);
-                }
-            } else if (L[i] == N) {
-                addEdge(N + L[i], i, 0);
-                if (bLayer[L[i] - 1]) {
-                    addEdge(i, N + L[i] - 1, C);
-                }
-            } else {
-                addEdge(N + L[i], i, 0);
-                if (bLayer[L[i] + 1] && L[i] < N)
-                    addEdge(i, N + L[i] + 1, C);
-                if (bLayer[L[i] - 1] && L[i] > 1)
-                    addEdge(i, N + L[i] - 1, C);
-            }
         }
         for (int layer = 1; layer <= maxLayer; ++layer) {
             if (!bLayer[layer]) continue; // 没出现的层不用考虑
@@ -101,7 +89,7 @@ int main(void) {
             addEdge(u, v, w); // 额外边, 这里要建两次边才行
             addEdge(v, u, w);
         }
-        printf("Case #%d: %d\n", t, dijkstra());
+        printf("Case #%d: %d\n", t, spfa());
     }
     return 0;
 }

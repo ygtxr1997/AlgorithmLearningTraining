@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <queue>
 using namespace::std;
-const int maxn = 101; // 10^5
+const int maxn = 100100; // 10^5
 const int INF = 0x3f3f3f3f;
 // 边数较少, 用邻接表
 typedef struct Node {
@@ -63,11 +63,11 @@ int dijkstra(void) {
 int main(void) {
     freopen("input.txt", "w", stdout);
     srand((unsigned)time(NULL));
-    T = 500; printf("%d\n", T);
+    T = 20; printf("%d\n", T);
     for (int t = 1; t <= T; ++t) {
         N = 1 + (rand() % maxn);
         M = 1 + (rand() % maxn);
-        C = 1 + (rand() % maxn);
+        C = 1 + (rand() % 1000);
         printf("%d %d %d\n", N, M, C);
         for (int i = 1; i <= N; ++i) {
             int Li = 1 + (rand() % N);
@@ -78,7 +78,7 @@ int main(void) {
             int u, v, w;
             u = 1 + (rand() % N);
             v = 1 + (rand() % N);
-            w = 1 + (rand() % 100);
+            w = 1 + (rand() % 10000);
             printf("%d %d %d\n", u, v, w);
         }
         printf("\n");
