@@ -12,6 +12,7 @@ const int maxn = 310;
 const int INF = 0x3f3f3f3f;
 const int dir[4][2] = {1, 0, -1, 0, 0, 1, 0, -1};
 
+// 把问题转化为找到迷宫中最近的INF, 并且在寻找过程中的step必须小于流星最早到达的时间
 int M;
 int grid[maxn][maxn];
 int vis[maxn][maxn];
