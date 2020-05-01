@@ -5,7 +5,7 @@ using namespace::std;
 const int maxn = 103;
 const int maxm = 100010;
 
-// 多重背包问题, 
+// 多重集部分和问题, 
 // dp[i][j]:前i种硬币凑成总额j,第i种硬币的剩余个数,若不可能凑成则值为-1
 //              | C[i],                 dp[i][j]>=0
 // dp[i+1][j] = | -1,                   j<A[i]或dp[i+1][j-A[i]]<=0
