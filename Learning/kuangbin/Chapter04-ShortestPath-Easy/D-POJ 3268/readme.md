@@ -1,2 +1,2 @@
-## Heavy Transportation
-[POJ 1797](http://poj.org/problem?id=1797)
+## Silver Cow Party
+[POJ 3268](http://poj.org/problem?id=3268)
