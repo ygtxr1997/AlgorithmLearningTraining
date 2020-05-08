@@ -27,17 +27,22 @@
 // | c(i) |    | 0 1 2 |      | 0 |
 // 再用快速幂运算即可求得答案
 // ---------------------------------------------------------------------
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+#include <vector>
+using namespace::std;
 
 // 二维vector表示矩阵
 typedef vector<int> vec;
 typedef vector<vec> mat;
 typedef long long ll;
 
-const int M = 1e4;
+const int M = 1e4 + 7;
 
 // 计算 A*B
 mat mul(mat &A, mat &B) {
-    mat C(A.size(), vec(B[0].size());
+    mat C(A.size(), vec(B[0].size()));
     for (int i = 0; i < A.size(); ++i) {
         for (int k = 0; k < B.size(); k++) {
             for (int j = 0; j < B[0].size(); j++) {
@@ -72,4 +77,14 @@ void solve() {
     A[2][0] = 0; A[2][1] = 1; A[2][2] = 2;
     A = pow(A, N);
     printf("%d\n", A[0][0]);
+}
+
+int main(void) {
+    int T;
+    scanf("%d", &T);
+    while (T--) {
+        scanf("%d", &N);
+        solve();
+    }
+    return 0;
 }
